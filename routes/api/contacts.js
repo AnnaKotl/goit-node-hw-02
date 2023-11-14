@@ -1,6 +1,6 @@
 const express = require('express');
-const { queries } = require('../../models/contacts');
-const { createBodyValidator } = require('../../middleware');
+const queries = require('../../models/contacts');
+const { createBodyValidator } = require('../../middleware/middleware');
 const { joiSchema, addToFavorites } = require('../../models/joi');
 
 const router = express.Router();
