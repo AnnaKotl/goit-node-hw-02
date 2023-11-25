@@ -1,4 +1,5 @@
 const { Contact } = require('./schema');
+const HttpError = require('../httpErrors/httpErrors');
 
 async function listContacts(_, res, next) {
   // Повертає масив контактів.
@@ -16,12 +17,16 @@ async function getContactById(req, res, next) {
   try {
     const contact = await Contact.findById(contactId).exec();
 
-    if (contact === null) {
-      return res.status(404).send('Contact not found');
+    if (!contact) {
+      throw HttpError(404, 'Contact not found');
     }
 
     res.send(contact);
   } catch (error) {
+    if (error.name === 'CastError') {
+      // приведення типів
+      return res.status(404).json({ message: 'Contact not found' });
+    }
     next(error);
   }
 }
@@ -30,14 +35,17 @@ async function removeContact(req, res, next) {
   // Повертає об'єкт видаленого контакту. Повертає null, якщо контакт з таким id не знайдений.
   const { contactId } = req.params;
   try {
-    const contact = await Contact.findByIdAndDelete(contactId);
+    const result = await Contact.findByIdAndDelete(contactId);
 
-    if (contact === null) {
-      return res.status(404).send('Contact not found');
+    if (result === null) {
+      return res.status(404).send('Contact not found:(');
     }
 
-    res.send('Contact deleted');
+    res.send('Contact delete');
   } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(404).json({ message: 'Contact not found' });
+    }
     next(error);
   }
 }
@@ -81,8 +89,11 @@ async function updateContact(req, res, next) {
     }
 
     res.send(result);
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(404).json({ message: 'Contact not found' });
+    }
+    next(err);
   }
 }
 
@@ -105,6 +116,9 @@ async function addToFavorites(req, res, next) {
 
     res.json(result);
   } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(404).json({ message: 'Contact not found' });
+    }
     next(error);
   }
 }
