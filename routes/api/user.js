@@ -10,6 +10,13 @@ router.post(
   createBodyValidator(schemas.schema),
   UsersController.register
 );
+// POST http://localhost:3003/api/users/register
+// rav: 
+//  {
+//    "email": "user@example.com",
+//    "password": "password123",
+//     "subscription": "pro"
+//  }
 
 router.post(
   '/login',

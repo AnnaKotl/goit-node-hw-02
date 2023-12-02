@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const HttpError = require('../httpErrors/httpErrors');
+const HttpError = require('../httpErrors/errors');
 const { User } = require('../models/userSchema');
 
 const authenticate = async (req, _, next) => {

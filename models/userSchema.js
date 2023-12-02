@@ -29,7 +29,7 @@ const schema = Joi.object({
     .valid('starter', 'pro', 'business')
     .default('starter'),
 });
-
+ 
 const updateSchema = Joi.object({
   subscription: Joi.string().valid('starter', 'pro', 'business').allow(null),
 });

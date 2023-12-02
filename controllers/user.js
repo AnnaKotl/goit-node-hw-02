@@ -1,19 +1,22 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
-const HttpError = require('../httpErrors/httpErrors');
+const HttpError = require('../httpErrors/errors');
 const { User } = require('../models/userSchema');
 
 const secret = process.env.SECRET_KEY;
+console.log('Current value of SECRET_KEY:', secret);
 
 async function register(req, res, next) {
   const { email, password } = req.body;
 
+  console.log('Current value of SECRET_KEY:', secret);
+
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).exec();
 
     if (user) {
-      throw new HttpError(409, 'Email in use.');
+      console.log('Value of SECRET_KEY before jwt.sign:', secret);
+      throw HttpError(409, 'Email in use');
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -110,8 +113,8 @@ async function updateToken(id, token) {
 }
 
 module.exports = {
-    register,
-    login,
-    logout,
-    current
+  register,
+  login,
+  logout,
+  current,
 };
