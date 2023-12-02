@@ -23,6 +23,9 @@ async function register(req, res, next) {
     const newUser = await User.create({ ...req.body, password: hashPassword });
 
     const id = newUser._id;
+
+    console.log('Current value of SECRET_KEY before jwt.sign:', secret);
+
     const token = jwt.sign({ id }, secret, { expiresIn: '20h' });
     await updateToken(id, token);
 
