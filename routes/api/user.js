@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const UsersController = require('../../controllers/user');
-const { createBodyValidator, authenticate } = require('../../middleware');
+const { createBodyValidator, authenticate } = require('../../middleware/middleware');
 const { schemas } = require('../../models/userSchema');
 
 router.post(
