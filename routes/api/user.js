@@ -11,12 +11,13 @@ router.post(
   UsersController.register
 );
 // POST http://localhost:3003/api/users/register
-// rav: 
+// rav:
 //  {
 //    "email": "user@example.com",
 //    "password": "password123",
 //     "subscription": "pro"
 //  }
+// token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NmI2YThjNDBjYTUxZGU2NDkzMTEyZSIsImlhdCI6MTcwMTUzODQ0NCwiZXhwIjoxNzAxNjEwNDQ0fQ.Ntkvt0x3AD77hZ653IqTelqxVMH8rDIOqIAzM-BfBqU
 
 router.post(
   '/login',

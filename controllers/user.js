@@ -4,18 +4,18 @@ const HttpError = require('../httpErrors/errors');
 const { User } = require('../models/userSchema');
 
 const secret = process.env.SECRET_KEY;
-console.log('Current value of SECRET_KEY:', secret);
+// console.log('Current value of SECRET_KEY:', secret);
 
 async function register(req, res, next) {
   const { email, password } = req.body;
 
-  console.log('Current value of SECRET_KEY:', secret);
+  // console.log('Current value of SECRET_KEY:', secret);
 
   try {
     const user = await User.findOne({ email }).exec();
 
     if (user) {
-      console.log('Value of SECRET_KEY before jwt.sign:', secret);
+      // console.log('Value of SECRET_KEY before jwt.sign:', secret);
       throw HttpError(409, 'Email in use');
     }
 

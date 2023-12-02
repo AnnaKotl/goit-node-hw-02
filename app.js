@@ -17,9 +17,6 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-// Вивести поточне значення SECRET_KEY
-// console.log('Поточне значення SECRET_KEY:', process.env.SECRET_KEY);
-
 app.use('/api/contacts', contactsRouter);
 app.use('/api/users', userRouter);
 
