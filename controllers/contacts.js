@@ -1,5 +1,5 @@
-const { Contact } = require('./schema');
 const HttpError = require('../httpErrors/httpErrors');
+const { Contact } = require('../models/contactsSchema');
 
 async function listContacts(_, res, next) {
   // Повертає масив контактів.
