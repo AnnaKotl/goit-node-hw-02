@@ -3,6 +3,7 @@ const router = express.Router();
 
 const UsersController = require('../../controllers/user');
 const { createBodyValidator, authenticate } = require('../../middleware/middleware');
+const upload = require('../../middleware/upload');
 const { schemas } = require('../../models/userSchema');
 
 router.post(
@@ -17,7 +18,7 @@ router.post(
 //    "password": "password123",
 //     "subscription": "pro"
 //  }
-// token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NmI2YThjNDBjYTUxZGU2NDkzMTEyZSIsImlhdCI6MTcwMTUzODQ0NCwiZXhwIjoxNzAxNjEwNDQ0fQ.Ntkvt0x3AD77hZ653IqTelqxVMH8rDIOqIAzM-BfBqU
+// token: ///
 
 router.post(
   '/login',
@@ -26,6 +27,16 @@ router.post(
 );
 
 router.post('/logout', authenticate, UsersController.logout);
+
 router.get('/current', authenticate, UsersController.current);
+
+router.patch(
+  '/avatars',
+  authenticate,
+  upload.single('avatar'),
+  UsersController.updateAvatar
+);
+// "Body" => "form-data"
+// PATCH http://localhost:3003/api/users/avatars
 
 module.exports = router;
