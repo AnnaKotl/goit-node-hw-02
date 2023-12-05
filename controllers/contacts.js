@@ -1,30 +1,27 @@
-const HttpError = require('../httpErrors/errors')
+const HttpError = require('../httpErrors/errors');
 const { Contact } = require('../models/contactsSchema');
 
 async function listContacts(_, res, next) {
-  // Повертає масив контактів.
   try {
-    const getContacts = await Contact.find().exec();
-    res.send(getContacts);
+    const getContacts = await Contact.find();
+    res.json(getContacts);
   } catch (error) {
     next(error);
   }
 }
 
 async function getContactById(req, res, next) {
-  // Повертає об'єкт контакту з таким id. Повертає null, якщо контакт з таким id не знайдений.
   const { contactId } = req.params;
   try {
-    const contact = await Contact.findById(contactId).exec();
+    const contact = await Contact.findById(contactId);
 
     if (!contact) {
       throw HttpError(404, `Contact with ID ${contactId} not found`);
     }
 
-    res.send(contact);
+    res.json(contact);
   } catch (error) {
     if (error.name === 'CastError') {
-      // приведення типів
       return res
         .status(404)
         .json({ message: `Contact with ID ${contactId} not found` });
@@ -34,12 +31,11 @@ async function getContactById(req, res, next) {
 }
 
 async function removeContact(req, res, next) {
-  // Повертає об'єкт видаленого контакту. Повертає null, якщо контакт з таким id не знайдений.
   const { contactId } = req.params;
   try {
     const result = await Contact.findByIdAndDelete(contactId);
 
-    if (result === null) {
+    if (!result) {
       return res.status(404).send(`Contact with ID ${contactId} not found`);
     }
 
@@ -55,44 +51,32 @@ async function removeContact(req, res, next) {
 }
 
 async function addContact(req, res, next) {
-  // Повертає об'єкт доданого контакту.
-  const contact = {
-    name: req.body.name,
-    email: req.body.email,
-    phone: req.body.phone,
-    favorite: req.body.favorite,
-  };
+  const { name, email, phone, favorite } = req.body;
+  const contact = { name, email, phone, favorite };
 
   try {
     const newContact = await Contact.create(contact);
-
-    res.status(201).send(newContact);
+    res.status(201).json(newContact);
   } catch (error) {
     next(error);
   }
 }
 
 async function updateContact(req, res, next) {
-  // Повертає оновлений об'єкт контакту.
   const { contactId } = req.params;
-
-  const contact = {
-    name: req.body.name,
-    email: req.body.email,
-    phone: req.body.phone,
-    favorite: req.body.favorite,
-  };
+  const { name, email, phone, favorite } = req.body;
+  const contact = { name, email, phone, favorite };
 
   try {
     const result = await Contact.findByIdAndUpdate(contactId, contact, {
       new: true,
     });
 
-    if (result === null) {
+    if (!result) {
       return res.status(404).send(`Contact with ID ${contactId} not found`);
     }
 
-    res.send(result);
+    res.json(result);
   } catch (err) {
     if (err.name === 'CastError') {
       return res
@@ -104,7 +88,6 @@ async function updateContact(req, res, next) {
 }
 
 async function addToFavorites(req, res, next) {
-  // В обраному чи ні знаходиться зазначений контакт.
   const { contactId } = req.params;
 
   if (req.body.favorite === undefined || req.body.favorite === null) {
@@ -134,7 +117,6 @@ async function addToFavorites(req, res, next) {
 }
 
 async function updateStatusContact(contactId, data) {
-  // Поновлення контакту в базі.
   try {
     const result = await Contact.findByIdAndUpdate(contactId, data, {
       new: true,
@@ -153,5 +135,4 @@ module.exports = {
   addContact,
   updateContact,
   addToFavorites,
-  updateStatusContact,
 };
