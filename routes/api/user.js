@@ -11,7 +11,7 @@ router.post(
   createBodyValidator(schemas.schema),
   UsersController.register
 );
-// POST http://localhost:3003/api/users/register
+// POST http://localhost:3000/api/users/register
 // rav:
 //  {
 //    "email": "user@example.com",
@@ -37,6 +37,14 @@ router.patch(
   UsersController.updateAvatar
 );
 // "Body" => "form-data"
-// PATCH http://localhost:3003/api/users/avatars
+// PATCH http://localhost:3000/api/users/avatars
+
+router.get('/verify/:verificationToken', UsersController.verify);
+
+router.get(
+  '/send-verify',
+  createBodyValidator(schemas.verifySchema),
+  UsersController.sendVerify
+); // or POST
 
 module.exports = router;

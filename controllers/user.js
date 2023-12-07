@@ -33,7 +33,7 @@ async function register(req, res, next) {
 
     await sendEmail({
       to: email,
-      subject: 'Welcome to my BookShelf',
+      subject: 'Welcome to your Contact Book!',
       html: `To confirm your registration please click on the <a href="http://localhost:3000/api/users/verify/${verificationToken}">link</a>`,
       text: `To confirm your registration please open the link http://localhost:3000/api/users/verify/${verificationToken}`,
     });

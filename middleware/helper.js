@@ -11,10 +11,18 @@ const transport = nodemailer.createTransport({
   },
 });
 
-function sendEmail(message) {
-  message.from = 'kotlyaranya1771@gmail.com';
+async function sendEmail(message) {
+  try {
+    message.from = 'kotlyaranya1771@gmail.com';
 
-  return transport.sendMail(message);
+    const result = await transport.sendMail(message);
+    console.log('Email sent:', result);
+
+    return result;
+  } catch (error) {
+    console.error('Email sending error:', error);
+    throw error;
+  }
 }
 
 module.exports = sendEmail;
